@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUpgrader", "DbUpgrader\DbUpgrader.csproj", "{C1DC3DD0-9A26-4E9A-BB1E-8A8CF395CEB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUpgraderTest", "DbUpgraderTest\DbUpgraderTest.csproj", "{7BCA0C79-925F-44CA-98CF-B927AAEDC025}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1DC3DD0-9A26-4E9A-BB1E-8A8CF395CEB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1DC3DD0-9A26-4E9A-BB1E-8A8CF395CEB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1DC3DD0-9A26-4E9A-BB1E-8A8CF395CEB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1DC3DD0-9A26-4E9A-BB1E-8A8CF395CEB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BCA0C79-925F-44CA-98CF-B927AAEDC025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BCA0C79-925F-44CA-98CF-B927AAEDC025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BCA0C79-925F-44CA-98CF-B927AAEDC025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BCA0C79-925F-44CA-98CF-B927AAEDC025}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
