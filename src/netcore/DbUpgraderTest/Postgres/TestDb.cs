@@ -11,16 +11,6 @@ namespace DbUpgraderTest
     {
 
         [Test]
-        public void RemoveDb(){
-            var masterCn = new DbConnection(DbDatabaseType.Postgres,
-                "Host=127.0.0.1;Username=sinobu;Password=-101868;Database=postgres");
-
-            var db = new DbContext(masterCn);
-            db.ExecNoQuery("DROP DATABASE test");
-        }
-
-
-        [Test]
         public async Task TestDb(){
             var content = @"
 
@@ -65,7 +55,7 @@ create table sex_a
                 "Host=127.0.0.1;Username=sinobu;Password=-101868;Database=test");
 
             var upgrade = new DbUpgradeHelper(new DbScript(content), "test", masterCn, curCn);
-            await upgrade.Check();
+            await upgrade.CheckAndUpgrade();
         }
     }
 }

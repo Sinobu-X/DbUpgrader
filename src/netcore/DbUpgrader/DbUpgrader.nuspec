@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/Sinobu-X/DbUpgrader</projectUrl>
+    <license type="file">LICENSE.txt</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>First Publish</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>Database Upgrade Helper, Support Postgres</tags>
+    <dependencies>
+      <group targetFramework="netcoreapp2.1">
+        <dependency id="DbLightCore" version="2.0.3" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="LICENSE.txt" target="" />
+  </files>
+</package>

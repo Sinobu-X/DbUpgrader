@@ -1,0 +1,5 @@
+find . -name '.DS_Store' -type f -delete
+
+Build Project
+nuget pack DbUpgrader.csproj
+nuget push DbUpgraderCore.1.0.1.nupkg  -source nuget.org

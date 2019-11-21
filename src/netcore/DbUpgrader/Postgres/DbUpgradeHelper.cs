@@ -20,7 +20,7 @@ namespace DbUpgrader.Postgres
             _curDbCn = curDbConnection;
         }
 
-        public async Task Check(){
+        public async Task CheckAndUpgrade(){
             if (!await CheckDbExist()){
                 await CreateDb();
                 return;
