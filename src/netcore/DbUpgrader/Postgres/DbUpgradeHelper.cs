@@ -52,8 +52,12 @@ namespace DbUpgrader.Postgres
             using (var db = new DbContext(_curDbCn)){
                 await db.BeginTransactionAsync();
 
-                await db.ExecNoQueryAsync(_script.Create);
-                await db.ExecNoQueryAsync(_script.Add.Replace("{version}", _script.StartVersion.ToString()));
+                await db.ExecNoQueryAsync(_script.VersionTable.CreateSql
+                    .Replace("{table}", _script.VersionTable.TableName));
+
+                await db.ExecNoQueryAsync(_script.VersionTable.AddSql
+                    .Replace("{table}", _script.VersionTable.TableName)
+                    .Replace("{version}", _script.StartVersion.ToString()));
 
                 db.Commit();
             }
@@ -64,7 +68,7 @@ namespace DbUpgrader.Postgres
 
             {
                 var sql =
-                    $"SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '{_script.Table}'";
+                    $"SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '{_script.VersionTable.TableName}'";
                 var dt = await db.ExecQueryToDataTableAsync(sql);
                 if (dt.Rows.Count == 0){
                     await CreateVersionTable();
@@ -72,7 +76,8 @@ namespace DbUpgrader.Postgres
             }
 
             {
-                var dt = await db.ExecQueryToDataTableAsync(_script.Check);
+                var dt = await db.ExecQueryToDataTableAsync(_script.VersionTable.CheckSql
+                    .Replace("{table}", _script.VersionTable.TableName));
                 return dt.Rows.Count == 1 && Convert.ToInt32(dt.Rows[0][0]) >= _script.LastVersion;
             }
         }
@@ -82,7 +87,8 @@ namespace DbUpgrader.Postgres
 
             int oldVersion;
             {
-                var dt = await db.ExecQueryToDataTableAsync(_script.Check);
+                var dt = await db.ExecQueryToDataTableAsync(_script.VersionTable.CheckSql
+                    .Replace("{table}", _script.VersionTable.TableName));
                 if (dt.Rows.Count == 1){
                     oldVersion = Convert.ToInt32(dt.Rows[0][0]);
                 }
@@ -110,7 +116,9 @@ namespace DbUpgrader.Postgres
                     await dbx.ExecNoQueryAsync(_script.Bags[i].Scripts);
                 }
 
-                await db.ExecNoQueryAsync(_script.Update.Replace("{version}", _script.LastVersion.ToString()));
+                await db.ExecNoQueryAsync(_script.VersionTable.UpdateSql
+                    .Replace("{table}", _script.VersionTable.TableName)
+                    .Replace("{version}", _script.LastVersion.ToString()));
 
                 dbx.Commit();
             }

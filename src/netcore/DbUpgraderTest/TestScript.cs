@@ -31,49 +31,49 @@ namespace DbUpgraderTest
             }
 
             {
-                var content = @"--|STA|VERSION,";
+                var content = @"--|STA|VERSION|";
                 Assert.AreEqual(Assert.Catch<DbInvalidScriptException>(() => {
                     var dbScript = new DbScript(content);
-                }).ErrorNo, DbInvalidScriptException.INVALID_START_TAG);
+                }).ErrorNo, DbInvalidScriptException.INVALID_START_BAG_TAG);
             }
 
             {
-                var content = @"--|STA|VERSION,d,d,d";
+                var content = @"--|STA|VERSION|d,d,d";
                 Assert.AreEqual(Assert.Catch<DbInvalidScriptException>(() => {
                     var dbScript = new DbScript(content);
-                }).ErrorNo, DbInvalidScriptException.INVALID_START_TAG);
+                }).ErrorNo, DbInvalidScriptException.INVALID_START_BAG_TAG);
             }
 
             {
-                var content = @"--|STA|VERSION,a,b";
+                var content = @"--|STA|VERSION|a,b";
                 Assert.AreEqual(Assert.Catch<DbInvalidScriptException>(() => {
                     var dbScript = new DbScript(content);
                 }).ErrorNo, DbInvalidScriptException.INVALID_FROM_VERSION);
             }
 
             {
-                var content = @"--|STA|VERSION,1,b";
+                var content = @"--|STA|VERSION|1,b";
                 Assert.AreEqual(Assert.Catch<DbInvalidScriptException>(() => {
                     var dbScript = new DbScript(content);
                 }).ErrorNo, DbInvalidScriptException.INVALID_TO_VERSION);
             }
 
             {
-                var content = @"--|STA|VERSION,1,4";
+                var content = @"--|STA|VERSION|1,4";
                 Assert.AreEqual(Assert.Catch<DbInvalidScriptException>(() => {
                     var dbScript = new DbScript(content);
                 }).ErrorNo, DbInvalidScriptException.LOST_END_TAG);
             }
 
             {
-                var content = @"--|STA|VERSION,5,4";
+                var content = @"--|STA|VERSION|5,4";
                 Assert.AreEqual(Assert.Catch<DbInvalidScriptException>(() => {
                     var dbScript = new DbScript(content);
                 }).ErrorNo, DbInvalidScriptException.FROM_VERSION_GREATER);
             }
 
             {
-                var content = @"--|STA|VERSION,1,4
+                var content = @"--|STA|VERSION|1,4
 --|END|
 
 --dd
@@ -85,7 +85,7 @@ namespace DbUpgraderTest
             }
 
             {
-                var content = @"--|STA|VERSION,1,4
+                var content = @"--|STA|VERSION|1,4
 --|END|
 
 --//command
@@ -95,9 +95,9 @@ namespace DbUpgraderTest
 
             {
                 var content = @"
---|STA|VERSION,1,4
+--|STA|VERSION|1,4
 --|END|
---|STA|VERSION,1,4
+--|STA|VERSION|1,4
 --|END|
 ";
                 var ex = Assert.Catch<DbInvalidScriptException>(() => {
@@ -108,9 +108,9 @@ namespace DbUpgraderTest
 
             {
                 var content = @"
---|STA|VERSION,1,4
+--|STA|VERSION|1,4
 --|END|
---|STA|VERSION,4,6
+--|STA|VERSION|4,6
 --|END|
 ";
                 var dbScript = new DbScript(content);
@@ -119,12 +119,12 @@ namespace DbUpgraderTest
 
             {
                 var content = @"
---|STA|VERSION,1,4
+--|STA|VERSION|1,4
 aa
 bb
 cc
 --|END|
---|STA|VERSION,4,6
+--|STA|VERSION|4,6
 aa
 bb
 cc
@@ -137,20 +137,24 @@ cc
 
             {
                 var content = @"
---|STA|VERSION_CTL
---|TABLE|sys_version
---|CREATE|create table sys_version(id integer not null constraint sys_version_pk primary key, version integer, create_time time, update_time time);
---|CHECK|SELECT version FROM sys_version WHERE id = 1
---|ADD|INSERT INTO sys_version(id, version, create_time, update_time) VALUES(1, {version}, NOW(), NOW())
---|UPDATE|UPDATE sys_version SET version = {version} WHERE id = 1
+--|STA|CONFIG|
+
+--|STA|VERSION-TABLE|
+--|NAME|db_version
+--|CREATE|create table {table}(id integer not null constraint {table}_pk primary key, version integer, create_time timestamp, update_time timestamp)
+--|ADD|INSERT INTO {table}(id, version, create_time, update_time) VALUES(1, {version}, NOW(), NOW())
+--|CHECK|SELECT version FROM {table} WHERE id = 1
+--|UPDATE|UPDATE {table} SET version = {version}, update_time = NOW() WHERE id = 1
 --|END|
 
---|STA|VERSION,1,4
+--|END|
+
+--|STA|VERSION|1,4
 aa
 bb
 cc
 --|END|
---|STA|VERSION,4,6
+--|STA|VERSION|4,6
 aa
 bb
 cc

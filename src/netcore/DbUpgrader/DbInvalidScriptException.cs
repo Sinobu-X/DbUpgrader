@@ -11,13 +11,13 @@ namespace DbUpgrader
         }
 
         public const int LOST_END_TAG = 1;
-        public const int INVALID_START_TAG = 2;
-        public const int INVALID_FROM_VERSION = 3;
-        public const int INVALID_TO_VERSION = 4;
-        public const int FROM_VERSION_GREATER = 5;
-        public const int FROM_VERSION_NOT_CONTINUE = 6;
-        public const int UNKNOWN_LINE = 7;
-        public const int LOST_START_TAG = 8;
+        public const int LOST_START_TAG = 2;
+        public const int INVALID_START_BAG_TAG = 3;
+        public const int INVALID_FROM_VERSION = 4;
+        public const int INVALID_TO_VERSION = 5;
+        public const int FROM_VERSION_GREATER = 6;
+        public const int FROM_VERSION_NOT_CONTINUE = 7;
+        public const int UNKNOWN_LINE = 8;
         public const int NO_BAGS = 9;
     }
 }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DbLight;
 using DbLight.Common;
 using DbUpgrader;
 using DbUpgrader.Postgres;
@@ -8,18 +9,34 @@ namespace DbUpgraderTest
 {
     public class TestPostgres
     {
+
+        [Test]
+        public void RemoveDb(){
+            var masterCn = new DbConnection(DbDatabaseType.Postgres,
+                "Host=127.0.0.1;Username=sinobu;Password=-101868;Database=postgres");
+
+            var db = new DbContext(masterCn);
+            db.ExecNoQuery("DROP DATABASE test");
+        }
+
+
         [Test]
         public async Task TestDb(){
             var content = @"
---|STA|VERSION_CTL
---|TABLE|sys_version
---|CREATE|create table sys_version(id integer not null constraint sys_version_pk primary key, version integer, create_time timestamp, update_time timestamp);
---|CHECK|SELECT version FROM sys_version WHERE id = 1
---|ADD|INSERT INTO sys_version(id, version, create_time, update_time) VALUES(1, {version}, NOW(), NOW())
---|UPDATE|UPDATE sys_version SET version = {version}, update_time = NOW() WHERE id = 1
+
+--|STA|CONFIG|
+
+--|STA|VERSION-TABLE|
+--|NAME|db_version
+--|CREATE|create table {table}(id integer not null constraint {table}_pk primary key, version integer, create_time timestamp, update_time timestamp)
+--|ADD|INSERT INTO {table}(id, version, create_time, update_time) VALUES(1, {version}, NOW(), NOW())
+--|CHECK|SELECT version FROM {table} WHERE id = 1
+--|UPDATE|UPDATE {table} SET version = {version}, update_time = NOW() WHERE id = 1
 --|END|
 
---|STA|VERSION,1,4
+--|END|
+
+--|STA|VERSION|1,4
 create table sex
 (
 	sex_id integer not null
@@ -28,7 +45,8 @@ create table sex
 	sex_name varchar(64)
 );
 --|END|
---|STA|VERSION,4,6
+
+--|STA|VERSION|4,6
 create table sex_a
 (
 	sex_id integer not null
@@ -37,7 +55,8 @@ create table sex_a
 	sex_name varchar(64)
 );
 --|END|
---|STA|VERSION,6,8
+
+--|STA|VERSION|6,8
 --|END|
 ";
             var masterCn = new DbConnection(DbDatabaseType.Postgres,
