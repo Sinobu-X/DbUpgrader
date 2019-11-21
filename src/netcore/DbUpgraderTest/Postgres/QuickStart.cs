@@ -29,7 +29,7 @@ create table city
 );
 --|END|
 
---|STA|VERSION|3,5
+--|STA|VERSION|2,5
 create table province
 (
 	province_id integer not null
